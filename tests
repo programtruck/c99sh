@@ -1,0 +1,6 @@
+#!/bin/bash -eux
+# c99sh top-level driver for all tests
+for driver in $(find . -mindepth 2 -name tests)
+do
+    "${driver}"
+done

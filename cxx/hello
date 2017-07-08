@@ -1,6 +1,7 @@
-#!/usr/bin/env cxxsh
+#!../cxxsh
+// Executable C++ script using a shebang (in scripts use #!/usr/bin/env cxxsh).
 int main()
 {
-    std::cout << "Hello, world!" << std::endl;
+    cout << "Hello, world!" << endl;
 }
-// vim:syntax=c++
+// vim:syntax=c

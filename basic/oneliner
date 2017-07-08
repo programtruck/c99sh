@@ -1,0 +1,41 @@
+#!/bin/bash -eu
+
+# Flag -e does not imply wrapping with main but does imply consuming some input
+../c99sh -e 'int main() {}' </dev/null
+../c99sh -se 'int main() {}' </dev/null
+
+# Multiple -e should all be emitted
+../c99sh -e 'int main()' -e '{}' </dev/null
+
+# Subsequent tests only work when the -m and -s options behave as expected
+../c99sh -m </dev/null
+../c99sh -ms </dev/null
+
+../c99sh -mse 'printf("Hello from 1-liner\n");' </dev/null
+
+../c99sh -mse 'int start = 3;' <<HERE
+return start == 3 ? 0 : 1;
+HERE
+
+../c99sh -ms -e 'int start = 0;' -e 'start += 3;' <<HERE
+return start == 3 ? 0 : 1;
+HERE
+
+# check \t escape handling
+../c99sh -ms -e 'printf("Hello ");' \
+             -e 'printf("World,with tab:\t");' \
+             -e 'printf("from 1-liner\n");' </dev/null
+
+# an example of escaping single-quotes on shell line:
+../c99sh -ms -e 'printf("'"'"'Hello ");' \
+             -e 'printf("World'"'"' ");' \
+             -e 'printf("from 1-liner\n");' </dev/null
+
+# an example of escaping double-quotes
+../c99sh -ms -e 'printf("\"Hello ");' \
+             -e 'printf("World\" ");' \
+             -e 'printf("from 1-liner\n");' </dev/null
+
+../c99sh -ms -e '#define w1 "Hello"' \
+             -e '#define w2 "World"' \
+             -e 'printf("%s %s\n", w1, w2);' </dev/null

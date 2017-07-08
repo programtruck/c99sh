@@ -1,0 +1,20 @@
+#!/bin/bash -eux
+# cxxsh test driver relying upon cxxshrc in the same directory
+cd "${0%/*}"
+
+./hello
+
+./heredoc
+
+./shebang.cpp
+g++ ./shebang.cpp
+./a.out
+rm a.out
+
+../cxxsh -vv -x a.out shebang.cpp
+./a.out
+rm a.out
+
+./quicktest.cpp
+g++ -c ./quicktest.cpp
+rm ./quicktest.o
